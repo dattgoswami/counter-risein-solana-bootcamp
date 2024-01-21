@@ -38,6 +38,10 @@ pub fn process_instruction(
             counter_account.counter += args.value;
         }
         CounterInstructions::Decrement(args) => {
+            // add check for underflow
+            if counter_account.counter < args.value {
+                return Err(ProgramError::InvalidInstructionData);
+            }
             counter_account.counter -= args.value;
         }
         CounterInstructions::Reset => {
